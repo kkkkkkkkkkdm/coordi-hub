@@ -5,15 +5,9 @@ import com.peter.musinsa.dto.response.CategoryLowestPricesResponse;
 import com.peter.musinsa.dto.response.CategoryMinMaxPriceResponse;
 import com.peter.musinsa.dto.response.CommonResponse;
 import com.peter.musinsa.service.CoordiService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-
 
 @RestController
 @RequiredArgsConstructor

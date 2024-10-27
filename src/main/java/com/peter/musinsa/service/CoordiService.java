@@ -11,10 +11,7 @@ import com.peter.musinsa.exception.ErrorCode;
 import com.peter.musinsa.repository.BrandRepository;
 import com.peter.musinsa.repository.CategoryRepository;
 import com.peter.musinsa.repository.ProductRepository;
-import jakarta.persistence.EntityNotFoundException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Objects;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +27,11 @@ public class CoordiService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
-
     public CategoryLowestPricesResponse findLowestPricesByCategory() {
         List<Category> categories = categoryRepository.findAll();
         List<CategoryLowestPricesResponse.CategoryPrice> categoryPrices = new ArrayList<>();
 
         long totalPrice = 0;
-
         for (Category category : categories) {
             Optional<Product> productOpt = productRepository.findMinPriceProductByCategory(category);
 
@@ -50,14 +44,10 @@ public class CoordiService {
                 product.getBrand().getName(),
                 product.getPrice()
             ));
-
             totalPrice += product.getPrice();
         }
-
         return new CategoryLowestPricesResponse(categoryPrices, totalPrice);
     }
-
-
     public BrandLowestTotalResponse findLowestTotalPriceBrand() {
         List<Brand> brands = brandRepository.findAll();
         if (brands.isEmpty()) {
@@ -88,7 +78,6 @@ public class CoordiService {
         }
 
         if (lowestTotalBrand == null) {
-//            lowestTotalBrand = null
             throw new BusinessException(ErrorCode.NO_BRAND_WITH_CATEGORIES);
         }
 
@@ -105,8 +94,6 @@ public class CoordiService {
             lowestTotal
         );
     }
-
-
     public CategoryMinMaxPriceResponse findMinMaxPricesByCategory(String categoryName) {
 
         Optional<Category> categoryOpt = categoryRepository.findByName(categoryName);

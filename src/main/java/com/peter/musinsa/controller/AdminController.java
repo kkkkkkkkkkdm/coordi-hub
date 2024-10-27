@@ -1,10 +1,12 @@
 package com.peter.musinsa.controller;
 
-import com.peter.musinsa.domain.Brand;
 import com.peter.musinsa.dto.request.CreateBrandRequest;
+import com.peter.musinsa.dto.request.CreateProductRequest;
 import com.peter.musinsa.dto.request.UpdateBrandRequest;
+import com.peter.musinsa.dto.request.UpdateProductRequest;
 import com.peter.musinsa.dto.response.BrandResponse;
 import com.peter.musinsa.dto.response.CommonResponse;
+import com.peter.musinsa.dto.response.ProductResponse;
 import com.peter.musinsa.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +45,8 @@ public class AdminController {
       @RequestParam(required = false) Boolean enabled) {
 
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-    Page<BrandResponse> brands = adminService.getBrands(pageRequest, enabled);
-    return ResponseEntity.ok(CommonResponse.success(brands));
+    Page<BrandResponse> response = adminService.getBrands(pageRequest, enabled);
+    return ResponseEntity.ok(CommonResponse.success(response));
   }
 
 
@@ -56,9 +57,9 @@ public class AdminController {
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<CommonResponse<BrandResponse>> createBrand(
       @RequestBody CreateBrandRequest request) {
-    BrandResponse brand = adminService.createBrand(request);
+    BrandResponse response = adminService.createBrand(request);
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(CommonResponse.success(brand));
+        .body(CommonResponse.success(response));
   }
 
   /**
@@ -68,8 +69,8 @@ public class AdminController {
   public ResponseEntity<CommonResponse<BrandResponse>> updateBrand(
       @PathVariable Long id,
       @RequestBody UpdateBrandRequest request) {
-    BrandResponse brand = adminService.updateBrand(id, request);
-    return ResponseEntity.ok(CommonResponse.success(brand));
+    BrandResponse response = adminService.updateBrand(id, request);
+    return ResponseEntity.ok(CommonResponse.success(response));
   }
 
   /**
@@ -80,4 +81,61 @@ public class AdminController {
     adminService.deleteBrand(id);
     return ResponseEntity.ok(CommonResponse.success(null));
   }
+
+  /**
+   * 상품 전체 조회
+   */
+  @GetMapping("/products")
+  public ResponseEntity<CommonResponse<Page<ProductResponse>>> getProducts(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "5") int size
+  ) {
+    PageRequest pageRequest = PageRequest.of(page, size);
+    Page<ProductResponse> products = adminService.getProducts(pageRequest);
+    return ResponseEntity.ok(CommonResponse.success(products));
+  }
+
+  /**
+   * 상품 단일 조회
+   */
+  @GetMapping("/products/{id}")
+    public ResponseEntity<CommonResponse<ProductResponse>> getProduct(
+        @PathVariable Long id
+    ) {
+        ProductResponse response = adminService.getProduct(id);
+        return ResponseEntity.ok(CommonResponse.success(response));
+    }
+  /**
+   * 상품 등록
+   */    
+  @PostMapping("/products")
+    public ResponseEntity<CommonResponse<ProductResponse>> createProduct(
+        @RequestBody CreateProductRequest request
+    ) {
+        ProductResponse response = adminService.createProduct(request);
+        return ResponseEntity.ok(CommonResponse.success(response));
+    }
+  /**
+   * 상품 수정
+   */
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<CommonResponse<ProductResponse>> updateProduct(
+        @PathVariable Long productId,
+        @RequestBody UpdateProductRequest request
+    ) {
+        ProductResponse response = adminService.updateProduct(productId, request);
+        return ResponseEntity.ok(CommonResponse.success(response));
+    }
+    /**
+     * 상품 삭제
+     */
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<CommonResponse<Void>> deleteProduct(
+        @PathVariable Long productId
+    ) {
+        adminService.deleteProduct(productId);
+        return ResponseEntity.ok(CommonResponse.success(null));
+    }
+
+    
 }

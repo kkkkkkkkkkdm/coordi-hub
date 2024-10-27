@@ -27,7 +27,14 @@ public class Product {
     @Column(nullable = false)
     private long price;
 
-    public Product(Brand brand, Category category, String name, Integer price ) {
+    public Product(Brand brand, Category category, String name, long price ) {
+        this.brand = brand;
+        this.category = category;
+        this.name = name;
+        this.price = price;
+    }
+
+    public void update(Brand brand, Category category, String name, long price) {
         this.brand = brand;
         this.category = category;
         this.name = name;

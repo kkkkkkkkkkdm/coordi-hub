@@ -45,20 +45,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         "ORDER BY p.category.name")
     List<Object[]> findCategoryMinPricesByBrand(@Param("brand") Brand brand);
 
-
-    List<Product> findAllByBrand(Brand brand);
-    Optional<Product> findByBrandAndCategory(Brand brand, Category category);
-
-
-
-
-    // TODO : 카테고리 목록을 입력으로 받는다.
-    @Query("SELECT COUNT(DISTINCT p.category) = :totalCategories " +
-        "FROM Product p " +
-        "WHERE p.brand = :brand")
-    boolean hasAllCategories(@Param("brand") Brand brand, @Param("totalCategories") long totalCategories);
-
     boolean existsByBrand(Brand brand);
-
 }
 
