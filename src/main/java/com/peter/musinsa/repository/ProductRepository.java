@@ -57,5 +57,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         "FROM Product p " +
         "WHERE p.brand = :brand")
     boolean hasAllCategories(@Param("brand") Brand brand, @Param("totalCategories") long totalCategories);
+
+    boolean existsByBrand(Brand brand);
+
 }
 

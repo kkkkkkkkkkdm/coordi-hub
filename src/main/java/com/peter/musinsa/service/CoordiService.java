@@ -6,6 +6,8 @@ import com.peter.musinsa.domain.Product;
 import com.peter.musinsa.dto.response.BrandLowestTotalResponse;
 import com.peter.musinsa.dto.response.CategoryLowestPricesResponse;
 import com.peter.musinsa.dto.response.CategoryMinMaxPriceResponse;
+import com.peter.musinsa.exception.BusinessException;
+import com.peter.musinsa.exception.ErrorCode;
 import com.peter.musinsa.repository.BrandRepository;
 import com.peter.musinsa.repository.CategoryRepository;
 import com.peter.musinsa.repository.ProductRepository;
@@ -40,9 +42,7 @@ public class CoordiService {
             Optional<Product> productOpt = productRepository.findMinPriceProductByCategory(category);
 
             Product product = productOpt.orElseThrow(() ->
-                new EntityNotFoundException(
-                    String.format("%s 카테고리에 상품이 없습니다.", category.getName())
-                )
+                new BusinessException(ErrorCode.PRODUCT_NOT_FOUND, String.format("'%s' 카테고리에 상품이 없습니다.", category.getName()))
             );
 
             categoryPrices.add(new CategoryLowestPricesResponse.CategoryPrice(
@@ -61,7 +61,7 @@ public class CoordiService {
     public BrandLowestTotalResponse findLowestTotalPriceBrand() {
         List<Brand> brands = brandRepository.findAll();
         if (brands.isEmpty()) {
-            throw new EntityNotFoundException("등록된 브랜드가 없습니다.");
+            throw new BusinessException(ErrorCode.BRAND_NOT_FOUND);
         }
 
         Brand lowestTotalBrand = null;
@@ -88,7 +88,8 @@ public class CoordiService {
         }
 
         if (lowestTotalBrand == null) {
-            throw new EntityNotFoundException("모든 카테고리의 상품을 보유한 브랜드가 없습니다.");
+//            lowestTotalBrand = null
+            throw new BusinessException(ErrorCode.NO_BRAND_WITH_CATEGORIES);
         }
 
         List<BrandLowestTotalResponse.CategoryPrice> categoryPrices = lowestCategoryPrices.stream()
@@ -110,7 +111,7 @@ public class CoordiService {
 
         Optional<Category> categoryOpt = categoryRepository.findByName(categoryName);
         Category category = categoryOpt.orElseThrow(() ->
-            new EntityNotFoundException(String.format("%s 카테고리가 존재하지 않습니다.", categoryName))
+            new BusinessException(ErrorCode.CATEGORY_NOT_FOUND)
         );
 
         // 카테고리별 최고, 최저가 상품 조회
@@ -118,11 +119,11 @@ public class CoordiService {
         List<Product> maxPriceProducts = productRepository.findAllMaxPriceProductsByCategory(category);
 
         if (minPriceProducts.isEmpty() || maxPriceProducts.isEmpty()) {
-            throw new EntityNotFoundException(
-                String.format("%s 카테고리에 상품이 없습니다.", categoryName)
+            throw new BusinessException(
+                ErrorCode.PRODUCT_NOT_FOUND,
+                String.format("카테고리 '%s'에 해당하는 제품이 없습니다.", categoryName)
             );
         }
-
 
         List<CategoryMinMaxPriceResponse.BrandPrice> lowestPriceProducts = minPriceProducts.stream()
             .map(product -> new CategoryMinMaxPriceResponse.BrandPrice(
