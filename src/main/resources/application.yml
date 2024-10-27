@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: musinsa
   h2:
     console:
       enabled: true
