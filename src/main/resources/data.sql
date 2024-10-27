@@ -1,14 +1,14 @@
 -- 브랜드 초기 데이터
-INSERT INTO brand (name)
-VALUES ('A'),
-       ('B'),
-       ('C'),
-       ('D'),
-       ('E'),
-       ('F'),
-       ('G'),
-       ('H'),
-       ('I');
+INSERT INTO brand (name, enabled)
+VALUES ('A', TRUE),
+       ('B', TRUE),
+       ('C', TRUE),
+       ('D', TRUE),
+       ('E', TRUE),
+       ('F', TRUE),
+       ('G', TRUE),
+       ('H', TRUE),
+       ('I', TRUE);
 
 -- 카테고리 초기 데이터
 INSERT INTO category (name)
