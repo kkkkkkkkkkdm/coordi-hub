@@ -9,6 +9,8 @@ import com.peter.musinsa.dto.response.CommonResponse;
 import com.peter.musinsa.dto.response.ProductResponse;
 import com.peter.musinsa.service.AdminService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -66,6 +68,11 @@ public class AdminController {
    * 브랜드 수정
    */
   @PutMapping("/brands/{id}")
+  @CacheEvict(value = {   
+    "lowestPricesByCategory", 
+    "lowestTotalPriceBrand", 
+    "categoryMinMaxPrices"
+  }, allEntries = true)
   public ResponseEntity<CommonResponse<BrandResponse>> updateBrand(
       @PathVariable Long id,
       @RequestBody UpdateBrandRequest request) {
@@ -77,6 +84,11 @@ public class AdminController {
    * 브랜드 삭제
    */
   @DeleteMapping("/brands/{id}")
+  @CacheEvict(value = {   
+    "lowestPricesByCategory", 
+    "lowestTotalPriceBrand", 
+    "categoryMinMaxPrices"
+  }, allEntries = true)
   public ResponseEntity<CommonResponse<Void>> deleteBrand(@PathVariable Long id) {
     adminService.deleteBrand(id);
     return ResponseEntity.ok(CommonResponse.success(null));
@@ -109,32 +121,47 @@ public class AdminController {
    * 상품 등록
    */    
   @PostMapping("/products")
-    public ResponseEntity<CommonResponse<ProductResponse>> createProduct(
-        @RequestBody CreateProductRequest request
-    ) {
-        ProductResponse response = adminService.createProduct(request);
-        return ResponseEntity.ok(CommonResponse.success(response));
-    }
+  @CacheEvict(value = {   
+        "lowestPricesByCategory", 
+        "lowestTotalPriceBrand", 
+        "categoryMinMaxPrices"
+    }, allEntries = true)
+  public ResponseEntity<CommonResponse<ProductResponse>> createProduct(
+      @RequestBody CreateProductRequest request
+  ) {
+      ProductResponse response = adminService.createProduct(request);
+      return ResponseEntity.ok(CommonResponse.success(response));
+  }
   /**
    * 상품 수정
    */
-    @PutMapping("/products/{productId}")
-    public ResponseEntity<CommonResponse<ProductResponse>> updateProduct(
-        @PathVariable Long productId,
-        @RequestBody UpdateProductRequest request
-    ) {
-        ProductResponse response = adminService.updateProduct(productId, request);
-        return ResponseEntity.ok(CommonResponse.success(response));
-    }
-    /**
-     * 상품 삭제
-     */
-    @DeleteMapping("/products/{productId}")
-    public ResponseEntity<CommonResponse<Void>> deleteProduct(
-        @PathVariable Long productId
-    ) {
-        adminService.deleteProduct(productId);
-        return ResponseEntity.ok(CommonResponse.success(null));
+  @PutMapping("/products/{productId}")
+  @CacheEvict(value = {   
+    "lowestPricesByCategory", 
+    "lowestTotalPriceBrand", 
+    "categoryMinMaxPrices"
+  }, allEntries = true)
+  public ResponseEntity<CommonResponse<ProductResponse>> updateProduct(
+      @PathVariable Long productId,
+      @RequestBody UpdateProductRequest request
+  ) {
+      ProductResponse response = adminService.updateProduct(productId, request);
+      return ResponseEntity.ok(CommonResponse.success(response));
+  }
+  /**
+   * 상품 삭제
+   */
+  @DeleteMapping("/products/{productId}")
+  @CacheEvict(value = {   
+    "lowestPricesByCategory", 
+    "lowestTotalPriceBrand", 
+    "categoryMinMaxPrices"
+  }, allEntries = true)
+  public ResponseEntity<CommonResponse<Void>> deleteProduct(
+      @PathVariable Long productId
+  ) {
+      adminService.deleteProduct(productId);
+      return ResponseEntity.ok(CommonResponse.success(null));
     }
 
     

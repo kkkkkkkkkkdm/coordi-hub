@@ -1,6 +1,8 @@
 spring:
   application:
     name: musinsa
+  cache:
+    type: simple
   h2:
     console:
       enabled: true
