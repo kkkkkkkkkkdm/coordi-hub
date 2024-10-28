@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카테고리 검색 - 무신사 시스템</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>카테고리 검색</h1>
+        <div class="search-container">
+            <input type="text" id="categoryInput" placeholder="카테고리명 입력" class="search-input">
+            <button onclick="searchCategory()" class="btn">검색</button>
+        </div>
+        <div id="resultContainer"></div>
+        <button onclick="location.href='main.html'" class="btn back-btn">뒤로가기</button>
+    </div>
+    <script src="../js/category-search.js"></script>
+</body>
+</html>

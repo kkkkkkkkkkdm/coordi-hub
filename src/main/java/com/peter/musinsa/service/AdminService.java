@@ -77,8 +77,11 @@ public class AdminService {
 
     boolean hasProducts = productRepository.existsByBrand(brand);
     boolean is_enabled = brand.isEnabled();
-    if (hasProducts | is_enabled) {
-      throw new BusinessException(ErrorCode.BRAND_DELETION_NOT_ALLOWED);
+    if (hasProducts) {
+      throw new BusinessException(ErrorCode.BRAND_DELETION_NOT_ALLOWED, "연관된 상품이 있습니다. 해당 상품 삭제후 진행해주세요.");
+    }
+    if (is_enabled){
+      throw new BusinessException(ErrorCode.BRAND_DELETION_NOT_ALLOWED, "해당 브랜드는 활성상태입니다. 비활성 상태로 수정 후 진행해주세요.");
     }
     brandRepository.delete(brand);
   }

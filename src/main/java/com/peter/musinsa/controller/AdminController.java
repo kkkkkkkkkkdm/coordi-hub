@@ -34,14 +34,14 @@ public class AdminController {
 
   /**
    * 브랜드 목록 조회
-   * 페이징 (기본 5개)
+   * 페이징 (기본 10개)
    * ID 역순 정렬
    * enabled 필터링 옵션
    */
   @GetMapping("/brands")
   public ResponseEntity<CommonResponse<Page<BrandResponse>>> getBrands(
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "5") int size,
+      @RequestParam(defaultValue = "10") int size,
       @RequestParam(required = false) Boolean enabled) {
 
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 관리 - 무신사 시스템</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>상품 관리</h1>
+        <button onclick="showCreateProductModal()" class="btn">상품 등록</button>
+        <div id="productsContainer"></div>
+        <div id="pagination" class="pagination"></div>
+        <button onclick="location.href='main.html'" class="btn back-btn">뒤로가기</button>
+    </div>
+
+    <!-- 상품 등록 -->
+    <div id="createProductModal" class="modal">
+        <div class="modal-content">
+            <h2>상품 등록</h2>
+            <form id="createProductForm">
+                <div class="form-group">
+                    <label for="createProductName">상품명</label>
+                    <input type="text" id="createProductName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="brandName">브랜드</label>
+                    <select id="brandName" name="brandName" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">카테고리</label>
+                    <select id="categoryName" name="categoryName" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="createProductPrice">가격</label>
+                    <input type="number" id="createProductPrice" name="price" required>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn">등록</button>
+                    <button type="button" onclick="hideModal('createProductModal')" class="btn cancel-btn">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 상품 수정 모달 -->
+    <div id="updateProductModal" class="modal">
+        <div class="modal-content">
+            <h2>상품 수정</h2>
+            <form id="updateProductForm">
+                <input type="hidden" id="updateProductId">
+                <div class="form-group">
+                    <label for="updateProductName">상품명</label>
+                    <input type="text" id="updateProductName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="updateBrandId">브랜드</label>
+                    <select id="updateBrandName" name="brandName" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="updateCategoryId">카테고리</label>
+                    <select id="updateCategoryName" name="categoryName" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="updateProductPrice">가격</label>
+                    <input type="number" id="updateProductPrice" name="price" required>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="btn">수정</button>
+                    <button type="button" onclick="hideModal('updateProductModal')" class="btn cancel-btn">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../js/admin-products.js"></script>
+</body>
+</html>
