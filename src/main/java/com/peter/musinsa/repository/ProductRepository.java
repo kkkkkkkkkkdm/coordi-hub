@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p FROM Product p " +
-        "WHERE p.category = :category AND p.price = (" +
-        "SELECT MIN(p2.price) FROM Product p2 WHERE p2.category = :category) " +
+        "WHERE p.category = :category AND p.brand.enabled = true AND p.price = (" +
+        "SELECT MIN(p2.price) FROM Product p2 WHERE p2.category = :category AND p2.brand.enabled = true) " +
         "ORDER BY p.id DESC")
     List<Product> findAllMinPriceProductsByCategory(@Param("category") Category category);
 
@@ -25,8 +25,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Query(value = "SELECT p FROM Product p " +
-        "WHERE p.category = :category AND p.price = (" +
-        "SELECT MAX(p2.price) FROM Product p2 WHERE p2.category = :category) " +
+        "WHERE p.category = :category AND p.brand.enabled = true AND p.price = (" +
+        "SELECT MAX(p2.price) FROM Product p2 WHERE p2.category = :category AND p2.brand.enabled = true) " +
         "ORDER BY p.id DESC")
     List<Product> findAllMaxPriceProductsByCategory(@Param("category") Category category);
 
@@ -40,7 +40,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT DISTINCT p.category.name, MIN(p.price) " +
         "FROM Product p " +
-        "WHERE p.brand = :brand " +
+        "WHERE p.brand = :brand AND p.brand.enabled = true " +
         "GROUP BY p.category.name " +
         "ORDER BY p.category.name")
     List<Object[]> findCategoryMinPricesByBrand(@Param("brand") Brand brand);
